@@ -43,6 +43,7 @@ YUI.add('ez-discoverybarviewservice', function (Y) {
          * @protected
          */
         _redirectToSearchView: function () {
+            console.log('viewsearch');
             this.get('app').navigateTo("viewSearch");
         },
     });

@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+    <title>eZ Search view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="searchview-ez-template">
+    <div class="ez-searchview-content">
+        <div class="ez-searchview-search-form">
+            <form class="ez-form pure-form">
+                <p>
+                    <label class="ez-form-label" for="searchstring">Search content:</label>
+                    <input class="ez-form-input" required id="searchstring" name="searchstring" type="text" value="">
+                    <button type="submit" class="pure-button ez-button">Search</button>
+                </p>
+            </form>
+            <div class="ez-searchlist-content"></div>
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-searchview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+            loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-searchview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-searchview": {
+                requires: [
+                    'ez-templatebasedview',
+                    'array-extras',
+                    'ez-searchlistview',
+                    'node-style',
+                    'ez-loadmorepagination',
+                    'event-valuechange',
+                ],
+                fullpath: "../../../Resources/public/js/views/ez-searchview.js"
+            },
+            "ez-searchlistview": {
+                requires: ['ez-searchplugin', 'subitemlistitemview', 'ez-loadmorepagination'],
+                fullpath: "../../../Resources/public/js/views/ez-searchlistview.js"
+            },
+            "ez-loadmorepagination": {
+                requires: ['view', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-loadmorepagination.js"
+            },
+            "ez-subitemlistitemview": {
+                requires: ['ez-templatebasedview', 'event-tap', 'event-valuechange', 'template'],
+                fullpath: "../../../../Resources/public/js/views/subitem/ez-subitemlistitemview.js"
+            },
+            "ez-searchplugin": {
+                requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry'],
+                fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-searchplugin.js"
+            },
+            "ez-viewservicebaseplugin": {
+                requires: ['plugin', 'base'],
+                fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-viewservicebaseplugin.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+            "ez-selection-table": {
+                requires: ['node'],
+                fullpath: "../../../Resources/public/js/extensions/ez-selection-table.js"
+            },
+        }
+    }).use('ez-searchview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

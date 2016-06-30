@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+    <title>eZ Search List view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="searchlistview-ez-template">
+    {{#if searchResultCount}}
+    <p class="ez-searchlist-count">Result list ({{searchResultCount}})</p>
+    <div class="ez-searchlist-resultlist">
+        <table class="ez-resultlist-table pure-table pure-table-bordered">
+            <thead>
+            <tr>
+                <th class="ez-searchlist-name-column">Name</th>
+                <th class="ez-searchlist-lastModificationDate-column">Modified</th>
+                <th class="ez-searchlist-contentType-column">Content type</th>
+                <th class="ez-searchlist-translations-column">Translations</th>
+            </tr>
+            </thead>
+            <tbody class="ez-searchlist-content  ez-loadmorepagination-content"></tbody>
+        </table>
+
+        <div class="ez-searchlist-pagination">
+            <p>
+                viewing <strong class="ez-loadmorepagination-display-count">{{ displayCount }}</strong>
+                out of <strong>{{ searchResultCount }}</strong> items
+            </p>
+            <p>
+                <button class="pure-button ez-button ez-loadmorepagination-more ez-font-icon" disabled>
+                    Show <span class="ez-loadmorepagination-more-count">{{ remainingCount }}</span> more results
+                </button>
+            </p>
+        </div>
+    </div>
+    {{else}}
+    <p class="ez-searchlist-no-result">This search has no result.</p>
+    {{/if}}
+</script>
+
+<script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-searchview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+            loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-searchlistview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-searchlistview": {
+                requires: ['ez-searchplugin', 'subitemlistitemview', 'ez-loadmorepagination'],
+                fullpath: "../../../Resources/public/js/views/ez-searchlistview.js"
+            },
+            "ez-loadmorepagination": {
+                requires: ['view', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-loadmorepagination.js"
+            },
+            "ez-subitemlistitemview": {
+                requires: ['ez-templatebasedview', 'event-tap', 'event-valuechange', 'template'],
+                fullpath: "../../../../Resources/public/js/views/subitem/ez-subitemlistitemview.js"
+            },
+            "ez-searchplugin": {
+                requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry'],
+                fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-searchplugin.js"
+            },
+            "ez-viewservicebaseplugin": {
+                requires: ['plugin', 'base'],
+                fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-viewservicebaseplugin.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+            "ez-selection-table": {
+                requires: ['node'],
+                fullpath: "../../../Resources/public/js/extensions/ez-selection-table.js"
+            },
+        }
+    }).use('ez-searchlistview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
