@@ -903,6 +903,12 @@ YUI.add('ez-platformuiapp', function (Y) {
                     service: Y.eZ.ServerSideViewService,
                     view: "serverSideView",
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                }, {
+                    name: "viewSearch",
+                    path: "/search",
+                    view: "searchView",
+                    sideViews: {'navigationHub': true, 'discoveryBar': true},
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView'],
                 },]
             },
             serverRouting: {
