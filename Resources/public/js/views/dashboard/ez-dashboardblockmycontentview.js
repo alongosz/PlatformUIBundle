@@ -12,7 +12,12 @@ YUI.add('ez-dashboardblockmycontentview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var BLOCK_IDENTIFIER = 'my-content';
+    var BLOCK_IDENTIFIER = 'my-content',
+        events = {
+            '.ez-edit-content-button': {
+                'tap': '_checkExistingDraft'
+            },
+        };
 
     /**
      * The all content dashboard block view
@@ -24,6 +29,7 @@ YUI.add('ez-dashboardblockmycontentview', function (Y) {
      */
     Y.eZ.DashboardBlockMyContentView = Y.Base.create('dashboardBlockMyContentView', Y.eZ.DashboardBlockAsynchronousView, [], {
         initializer: function () {
+            this.events = Y.merge(this.events, events);
             this._set('identifier', BLOCK_IDENTIFIER);
         },
 
@@ -34,6 +40,20 @@ YUI.add('ez-dashboardblockmycontentview', function (Y) {
                 contentInfo: item.location.get('contentInfo').toJSON(),
             };
         },
+
+        //TODO comment
+        _checkExistingDraft: function(e) {
+            var contentId = e.target.getAttribute('data-content-id');
+
+            //TODO figure out why it doesn't work
+            console.log('in the view');
+
+            //TODO comment
+            this.fire('checkExistingDraft', {
+                contentId: contentId
+            });
+        },
+
 
         /**
          * Fires a `locationSearch` event to search for the last modified

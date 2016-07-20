@@ -60,20 +60,18 @@ YUI.add('ez-locationviewviewservice', function (Y) {
         /**
          * editAction event handler, makes the application navigate to edit the
          * content available in the event facade
-         *
+         * TODO
          * @method _editContent
          * @protected
          * @param {Object} e event facade of the editAction event
+         *
          */
         _editContent: function (e) {
-            var app = this.get('app');
-
-            app.navigate(
-                app.routeUri('editContent', {
-                    id: e.content.get('id'),
-                    languageCode: this.get('languageCode')
-                })
-            );
+            //TODO comment
+            this.fire('editContentRequest', {
+                content: e.content,
+                languageCode: this.get('languageCode')
+            });
         },
 
         /**

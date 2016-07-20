@@ -21,6 +21,10 @@ YUI.add('ez-dashboardblocksviewservice', function (Y) {
      * @extends eZ.ViewService
      */
     Y.eZ.DashboardBlocksViewService = Y.Base.create('dashboardBlocksViewService', Y.eZ.ViewService, [], {
+        initializer: function () {
+            this.on('*:checkExistingDraft', this._checkExistingDraft);
+        },
+
         _load: function (next) {
             this._loadRootLocation()
                 .then(Y.bind(this._loadRootLocationModelData, this))
@@ -76,6 +80,19 @@ YUI.add('ez-dashboardblocksviewservice', function (Y) {
                     resolve(rootLocation);
                 });
             }, this));
+        },
+
+        //TODO comment
+        _checkExistingDraft: function(e) {
+            console.log("in the service : " + e.contentId);
+
+            //TODO lookup content
+
+            // TODO conent
+            // this.fire('editContentRequest', {
+            //     content: e.content,
+            //     languageCode: this.get('languageCode')
+            // });
         },
 
         _getViewParameters: function () {

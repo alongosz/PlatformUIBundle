@@ -41,16 +41,17 @@ YUI.add('ez-versionsplugin', function (Y) {
         },
 
         /**
-         * Loads versions list for content given in event facade. When loading of versions
-         * is finished, then it is set in `versions` attribute of the event target.
-         *
-         * The version attribute should be an object with the given properties: `archived`,
-         * `published` and `draft`
+         * Loads versions list for content given in event facade.
+         * When loading of versions is finished:
+         * - if a callback is provided, it is called.
+         * - if not, then it is set in `versions` attribute of the event target.
+         *   See `_sortVersions` for the structure of version.
          *
          * @method _loadVersions
          * @private
          * @param {EventFacade} e loadVersions event facade
          * @param {eZ.Content} e.content the content
+         * @param {Function} e.callback (optional) called once versions are loaded
          *
          */
         _loadVersions: function (e) {
@@ -63,9 +64,20 @@ YUI.add('ez-versionsplugin', function (Y) {
             e.content.loadVersions(options, Y.bind(function (error, versions) {
                 if (error) {
                     e.target.set('loadingError', true);
+
+                    //TODO refactor
+                    if (e.callback) {
+                        e.callback(error, versions);
+                    }
+
                 } else {
                     e.target.set('loadingError', false);
-                    e.target.set('versions', this._sortVersions(versions));
+
+                    if (e.callback) {
+                        e.callback(error, this._sortVersions(versions));
+                    } else {
+                        e.target.set('versions', this._sortVersions(versions));
+                    }
                 }
             }, this));
         },

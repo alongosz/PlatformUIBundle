@@ -1,0 +1,50 @@
+<table class="pure-table pure-table-striped ez-draft-conflict-list-table">
+    <thead>
+    <tr>
+        <th></th>
+        <th>Version</th>
+        <th>Language</th>
+        <th>Author</th>
+        <th>Created</th>
+        <th>Last saved</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each drafts}}
+        <tr>
+            <td>
+                <input type="checkbox"
+                       value="{{ id }}"
+                       class="ez-version-checkbox ez-draft-version-checkbox"
+                       data-version-id="{{ id }}">
+            </td>
+            <td>
+                {{versionNo}}
+            </td>
+            <td>
+                {{languageCodes}}
+            </td>
+            <td>
+                {{resources.Creator}}
+            </td>
+            <td>
+                {{creationDate}}
+            </td>
+            <td>
+                {{modificationDate}}
+            </td>
+            <td>
+                <a  class="ez-draft-conflict-link"
+                    href="{{ path 'editContentVersion'
+                            id=../content.id
+                            languageCode=initialLanguageCode
+                            versionId=id
+                        }}">
+                    Edit
+                </a>
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
